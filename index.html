@@ -21,39 +21,39 @@
     <div id="game-container">
         <div class="column" id="image-bank">
             <h3>Images</h3>
-            <div class="draggable" draggable="true" data-type="image" data-label="Prophase.jpg">Prophase.jpg</div>
-            <div class="draggable" draggable="true" data-type="image" data-label="Prometaphase.jpg">Prometaphase.jpg</div>
-            <div class="draggable" draggable="true" data-type="image" data-label="Metaphase.jpg">Metaphase.jpg</div>
-            <div class="draggable" draggable="true" data-type="image" data-label="Anaphase.jpg">Anaphase.jpg</div>
-            <div class="draggable" draggable="true" data-type="image" data-label="Telophase.jpg">Telophase.jpg</div>
-            <div class="draggable" draggable="true" data-type="image" data-label="Cytokinesis.jpg">Cytokinesis.jpg</div>
+            <div class="draggable" draggable="true" data-type="image" data-label="Prophase.jpg"><img src="Prophase.jpg" alt="Prophase" width="100"></div>
+            <div class="draggable" draggable="true" data-type="image" data-label="Prometaphase.jpg"><img src="Prometaphase.jpg" alt="Prometaphase" width="100"></div>
+            <div class="draggable" draggable="true" data-type="image" data-label="Metaphase.jpg"><img src="Metaphase.jpg" alt="Metaphase" width="100"></div>
+            <div class="draggable" draggable="true" data-type="image" data-label="Anaphase.jpg"><img src="Anaphase.jpg" alt="Anaphase" width="100"></div>
+            <div class="draggable" draggable="true" data-type="image" data-label="Telophase.jpg"><img src="Telophase.jpg" alt="Telophase" width="100"></div>
+            <div class="draggable" draggable="true" data-type="image" data-label="Cytokinesis.jpg"><img src="Cytokinesis.jpg" alt="Cytokinesis" width="100"></div>
         </div>
         <div class="column" id="name-bank">
             <h3>Phase Names</h3>
-            <div class="draggable" draggable="true" data-type="name" data-label="Prophase">Prophase</div>
-            <div class="draggable" draggable="true" data-type="name" data-label="Prometaphase">Prometaphase</div>
-            <div class="draggable" draggable="true" data-type="name" data-label="Metaphase">Metaphase</div>
-            <div class="draggable" draggable="true" data-type="name" data-label="Anaphase">Anaphase</div>
-            <div class="draggable" draggable="true" data-type="name" data-label="Telophase">Telophase</div>
-            <div class="draggable" draggable="true" data-type="name" data-label="Cytokinesis">Cytokinesis</div>
+            <div class="draggable" draggable="true" data-type="name">Prophase</div>
+            <div class="draggable" draggable="true" data-type="name">Prometaphase</div>
+            <div class="draggable" draggable="true" data-type="name">Metaphase</div>
+            <div class="draggable" draggable="true" data-type="name">Anaphase</div>
+            <div class="draggable" draggable="true" data-type="name">Telophase</div>
+            <div class="draggable" draggable="true" data-type="name">Cytokinesis</div>
         </div>
         <div class="column" id="description-bank">
             <h3>Descriptions</h3>
-            <div class="draggable" draggable="true" data-type="description" data-label="Prophase">Chromatin condenses into chromosomes</div>
-            <div class="draggable" draggable="true" data-type="description" data-label="Prometaphase">Nuclear envelope breaks down</div>
-            <div class="draggable" draggable="true" data-type="description" data-label="Metaphase">Chromosomes align at the center</div>
-            <div class="draggable" draggable="true" data-type="description" data-label="Anaphase">Sister chromatids separate</div>
-            <div class="draggable" draggable="true" data-type="description" data-label="Telophase">Two nuclei form</div>
-            <div class="draggable" draggable="true" data-type="description" data-label="Cytokinesis">Cytoplasm divides</div>
+            <div class="draggable" draggable="true" data-type="description">Chromatin condenses into chromosomes</div>
+            <div class="draggable" draggable="true" data-type="description">Nuclear envelope breaks down</div>
+            <div class="draggable" draggable="true" data-type="description">Chromosomes align at the center</div>
+            <div class="draggable" draggable="true" data-type="description">Sister chromatids separate</div>
+            <div class="draggable" draggable="true" data-type="description">Two nuclei form</div>
+            <div class="draggable" draggable="true" data-type="description">Cytoplasm divides</div>
         </div>
     </div>
     
     <div id="matching-area">
-       <div style="width: 100%; text-align: center;">
+  <div style="width: 100%; text-align: center;">
            <h3>Phase Builder</h3>
        </div>
        <div style="clear: both;"></div>
-       <div class="section" data-label="Prophase">
+      <div class="section" data-label="Prophase">
            <div class="drop-zone" data-type="image">Image</div>
            <div class="drop-zone" data-type="name">Phase</div>
            <div class="drop-zone" data-type="description">Description</div>
@@ -87,14 +87,12 @@
     
     <button id="check-button">Check Answers</button>
     <p id="result"></p>
-    
+
     <script>
         document.querySelectorAll('.draggable').forEach(item => {
             item.addEventListener('dragstart', event => {
-                event.dataTransfer.setData('text/plain', JSON.stringify({
-                    type: event.target.getAttribute('data-type'),
-                    label: event.target.getAttribute('data-label')
-                }));
+                event.dataTransfer.setData('text/plain', event.target.outerHTML);
+                setTimeout(() => event.target.style.display = 'none', 0);
             });
         });
 
@@ -104,10 +102,8 @@
             });
             zone.addEventListener('drop', event => {
                 event.preventDefault();
-                const data = JSON.parse(event.dataTransfer.getData('text/plain'));
-                if (zone.getAttribute('data-type') === data.type) {
-                    zone.textContent = data.label;
-                }
+                let data = event.dataTransfer.getData('text/plain');
+                zone.innerHTML = data;
             });
         });
     </script>
